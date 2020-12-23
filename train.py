@@ -162,7 +162,7 @@ if __name__ == '__main__':
 
 	x = data.x.to(device)  # Node features
 	y = data.y.to(device)  # Node classes
-	print(np.unique(y))
+	
 	num_targets = len(torch.unique(y))
 	print(f'Num classes: {num_targets}')
 
