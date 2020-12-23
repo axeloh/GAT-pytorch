@@ -83,12 +83,23 @@ class GAT(nn.Module):
         super(GAT, self).__init__()
         self.dropout = dropout
 
-        self.gat1 = GraphAttentionLayer(node_dim, hid_dim, dropout, alpha)
-        self.gat2 = GraphAttentionLayer(hid_dim, num_classes, dropout, alpha, concat=False)
+        self.attention_heads = [GraphAttentionLayer(node_dim, hid_dim, dropout, alpha) for _ in range(num_heads)]
+        for i, attention in enumerate(self.attention_heads):
+            self.add_module('attention_{}'.format(i), attention)
+
+        self.out_att = GraphAttentionLayer(hid_dim * num_heads, num_classes, dropout, alpha, concat=False)
+
+        # self.gat1 = GraphAttentionLayer(node_dim, hid_dim, dropout, alpha)
+        # self.gat2 = GraphAttentionLayer(hid_dim, num_classes, dropout, alpha, concat=False)
 
     def forward(self, x, A):
         x = torch.dropout(x, p=self.dropout, train=self.training)
-        x = self.gat1(x, A)
+        x = torch.cat([att(x, A) for att in self.attention_heads], dim=1)
         x = torch.dropout(x, p=self.dropout, train=self.training)
-        x = self.gat2(x, A)
+        x = torch.relu(self.out_att(x, A))
+
+        # x = torch.dropout(x, p=self.dropout, train=self.training)
+        # x = self.gat1(x, A)
+        # x = torch.dropout(x, p=self.dropout, train=self.training)
+        # x = self.gat2(x, A)
         return x
