@@ -55,6 +55,7 @@ def train(model, optimizer, data, A, n_epochs, plot=False, device=None):
 		plt.legend(loc='upper right')
 		plt.savefig('./outputs/att_loss_plot.png')
 		plt.show()
+		plt.close()
 
 		plt.plot(train_accuracies, label="Train accuracy")
 		plt.plot(val_accuracies, label="Validation accuracy")
@@ -63,6 +64,7 @@ def train(model, optimizer, data, A, n_epochs, plot=False, device=None):
 		plt.legend(loc='upper right')
 		plt.savefig('./outputs/att_accuracy_plot.png')
 		plt.show()
+		plt.close()
 
 
 def create_adjacency_matrix(num_nodes, edge_index, add_self_loops=True, normalize=True, device=None):
