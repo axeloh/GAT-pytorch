@@ -6,6 +6,7 @@ import networkx as nx
 import matplotlib.pyplot as plt
 import numpy as np
 import time
+import os
 import sys
 import scipy.sparse as sp
 from torch.autograd import Variable
@@ -44,6 +45,9 @@ def train(model, optimizer, data, A, n_epochs, plot=False, device=None):
 	print(f'Training done in {(time.time() - start):.1f}s')
 
 	if plot:
+		if not os.path.exists('outputs'):
+			os.makedirs('outputs')
+
 		plt.plot(train_losses, label="Train losses")
 		plt.plot(val_losses, label="Validation losses")
 		plt.xlabel("# Epoch")
