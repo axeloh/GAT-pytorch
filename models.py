@@ -97,9 +97,4 @@ class GAT(nn.Module):
         x = torch.cat([att(x, A) for att in self.attention_heads], dim=1)
         x = torch.dropout(x, p=self.dropout, train=self.training)
         x = F.elu(self.out_att(x, A))
-
-        # x = torch.dropout(x, p=self.dropout, train=self.training)
-        # x = self.gat1(x, A)
-        # x = torch.dropout(x, p=self.dropout, train=self.training)
-        # x = self.gat2(x, A)
         return x
