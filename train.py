@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import time
 import sys
+import scipy.sparse as sp
 from torch.autograd import Variable
 
 from models import GAT
@@ -75,7 +76,6 @@ def create_adjacency_matrix(num_nodes, edge_index, add_self_loops=True, normaliz
 		adj = adj / d.view(-1, 1)
 
 	return adj.to(device)
-
 
 def get_acc_and_loss(x, targets, model, A, type='train', device=None):
 	model.eval()
@@ -168,11 +168,10 @@ if __name__ == '__main__':
 	print(f'Num classes: {num_targets}')
 
 	A = create_adjacency_matrix(num_nodes, data.edge_index, device=device)
-	x, A, y = Variable(x), Variable(A), Variable(y)
 
 	model = GAT(
 		node_dim=num_features,
-		hid_dim=16,
+		hid_dim=4,
 		num_classes=num_targets,
 		dropout=0.6,
 		alpha=0.2,
