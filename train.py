@@ -77,6 +77,7 @@ def create_adjacency_matrix(num_nodes, edge_index, add_self_loops=True, normaliz
 
 	return adj.to(device)
 
+
 def get_acc_and_loss(x, targets, model, A, type='train', device=None):
 	model.eval()
 
@@ -171,7 +172,7 @@ if __name__ == '__main__':
 
 	model = GAT(
 		node_dim=num_features,
-		hid_dim=64,
+		hid_dim=32,
 		num_classes=num_targets,
 		dropout=0.6,
 		alpha=0.2,
