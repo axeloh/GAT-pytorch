@@ -168,7 +168,7 @@ if __name__ == '__main__':
 	print(f'Num classes: {num_targets}')
 
 	A = create_adjacency_matrix(num_nodes, data.edge_index, device=device)
-	x, A, y = Variable(x), torch.Variable(A), torch.Variable(y)
+	x, A, y = Variable(x), Variable(A), Variable(y)
 
 	model = GAT(
 		node_dim=num_features,
