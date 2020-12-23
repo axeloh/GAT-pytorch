@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import time
 import sys
+from torch.autograd import Variable
 
 from models import GAT
 
@@ -162,11 +163,13 @@ if __name__ == '__main__':
 
 	x = data.x.to(device)  # Node features
 	y = data.y.to(device)  # Node classes
-	
+
 	num_targets = len(torch.unique(y))
 	print(f'Num classes: {num_targets}')
 
 	A = create_adjacency_matrix(num_nodes, data.edge_index, device=device)
+	x, A, y = Variable(x), torch.Variable(A), torch.Variable(y)
+
 	model = GAT(
 		node_dim=num_features,
 		hid_dim=16,

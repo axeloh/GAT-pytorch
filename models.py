@@ -36,7 +36,7 @@ class GraphAttentionLayer(nn.Module):
 
         # Attention weights
         zero_vec = torch.ones_like(e) * 1e-15
-        attention = torch.where(A > 0, e, zero_vec)   # Mask out non-neighbours
+        attention = torch.where(A.detach().cpu() > 0, e, zero_vec)   # Mask out non-neighbours
         attention = torch.softmax(attention, dim=1)
         attention = torch.dropout(attention, self.dropout, train=self.trainig)
 
