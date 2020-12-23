@@ -20,8 +20,11 @@ class GraphAttentionLayer(nn.Module):
         self.leakyrelu = nn.LeakyReLU(alpha)
         self.concat = concat
 
-        self.W = nn.Parameter(torch.zeros((in_dim, out_dim)), requires_grad=True)
-        self.attn = nn.Linear(2 * out_dim, 1, bias=False)
+        self.W = nn.Parameter(torch.empty((in_dim, out_dim)))
+        nn.init.xavier_uniform_(self.W.data, gain=1.414)
+        self.a = nn.Parameter(torch.empty((2 * out_dim, 1)))
+        nn.init.xavier_uniform_(self.a.data, gain=1.414)
+        #self.a = nn.Linear(2 * out_dim, 1, bias=False)
 
     def forward(self, h, A):
         # h has shape (n, in_dim)
@@ -32,13 +35,13 @@ class GraphAttentionLayer(nn.Module):
         attn_input = self._make_attention_input(Wh)
 
         # Attention scores
-        e = self.leakyrelu(self.attn(attn_input))
+        e = self.leakyrelu(torch.matmul(attn_input, self.a).squeeze(2))
 
         # Attention weights
         zero_vec = torch.ones_like(e) * 1e-15
-        attention = torch.where(A.detach().cpu() > 0, e.detach().cpu(), zero_vec.detach().cpu()).to('cuda')   # Mask out non-neighbours
+        attention = torch.where(A > 0, e, zero_vec)   # Mask out non-neighbours
         attention = torch.softmax(attention, dim=1)
-        attention = torch.dropout(attention, self.dropout, train=self.trainig)
+        attention = torch.dropout(attention, self.dropout, train=self.training)
 
         # Computing new node features using the attention
         h_prime = torch.matmul(attention, Wh)
