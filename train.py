@@ -171,7 +171,7 @@ if __name__ == '__main__':
 
 	model = GAT(
 		node_dim=num_features,
-		hid_dim=4,
+		hid_dim=64,
 		num_classes=num_targets,
 		dropout=0.6,
 		alpha=0.2,

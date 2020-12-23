@@ -22,6 +22,7 @@ class GraphAttentionLayer(nn.Module):
 
         self.W = nn.Parameter(torch.empty((in_dim, out_dim)))
         nn.init.xavier_uniform_(self.W.data, gain=1.414)
+
         self.a = nn.Parameter(torch.empty((2 * out_dim, 1)))
         nn.init.xavier_uniform_(self.a.data, gain=1.414)
         #self.a = nn.Linear(2 * out_dim, 1, bias=False)
@@ -46,7 +47,6 @@ class GraphAttentionLayer(nn.Module):
         # Computing new node features using the attention
         h_prime = torch.matmul(attention, Wh)
 
-        print(h_prime.shape)
         # If concat, use ELU. Else, use nothing (author recommendations)
         if self.concat:
             return F.elu(h_prime)
