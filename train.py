@@ -178,13 +178,13 @@ if __name__ == '__main__':
 
 	model = GAT(
 		node_dim=num_features,
-		hid_dim=50,
+		hid_dim=32,
 		num_classes=num_targets,
 		dropout=0.6,
 		alpha=0.2,
 		num_heads=1
 	)
-	optimizer = torch.optim.Adam(model.parameters(), lr=0.01, weight_decay=5e-4)
+	optimizer = torch.optim.Adam(model.parameters(), lr=0.005, weight_decay=5e-4)
 
 	if torch.cuda.is_available():
 		model.cuda()
