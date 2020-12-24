@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import time
 import os
 import numpy as np
-
+from torch.autograd import Variable
 
 from utils import print_info_about_dataset, plot_dataset, accuracy, create_adjacency_matrix
 from models import GAT
@@ -16,8 +16,8 @@ def train(model, optimizer, x, y, A, n_epochs, plot=False, device=None):
 	train_losses, val_losses = [], []
 	targets = y
 
-	train_mask = torch.LongTensor(np.arange(140)).to(device)
-	val_mask = torch.LongTensor(np.arange(200, 500)).to(device)
+	train_mask = torch.LongTensor(range(140)).to(device)
+	val_mask = torch.LongTensor(range(200, 500)).to(device)
 	#train_mask = data.train_mask.to(device)
 	#val_mask = data.val_mask.to(device)
 	start = time.time()
@@ -86,6 +86,8 @@ if __name__ == '__main__':
 	num_nodes = data.num_nodes
 	num_features = dataset.num_node_features
 
+	print(type(data.train_mask))
+
 	x = data.x.to(device)  # Node features
 	y = data.y.to(device)  # Node classes
 
@@ -93,6 +95,8 @@ if __name__ == '__main__':
 	print(f'Num classes: {num_targets}')
 
 	A = create_adjacency_matrix(num_nodes, data.edge_index, device=device)
+
+	x, A, y = Variable(x), Variable(A), Variable(y)
 
 	model = GAT(
 		node_dim=num_features,
