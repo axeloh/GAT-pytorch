@@ -46,14 +46,14 @@ def train(model, optimizer, x, y, A, train_mask, val_mask, n_epochs, plot=False,
 			  f'train_acc: {train_acc.item():.3f}, '
 			  f'val_loss: {val_loss.item():.3f} '
 			  f'val_acc: {val_acc.item():.3f} '
-			  f'epoch duration: {epoch_time:.3f}s',
+			  f'epoch_time: {epoch_time:.3f}s',
 			  )
 
 	print(f'Training done in {(time.time() - start):.1f}s')
 
 	if plot:
-		if not os.path.exists('outputs'):
-			os.makedirs('outputs')
+		if not os.path.exists(save_path):
+			os.makedirs(save_path)
 
 		plt.plot(train_losses, label="Train losses")
 		plt.plot(val_losses, label="Validation losses")
