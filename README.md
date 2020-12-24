@@ -2,7 +2,8 @@
 
 A pytorch implementation of the Graph Attention Network (GAT) model presented by [Veličković et. al](https://arxiv.org/abs/1710.10903).
 This repo is a quick and somewhat inaccurate reproduction of the method described in the paper. 
-The official repository (in Tensorflow) is available in https://github.com/PetarV-/GAT. This repo is also inspired by https://github.com/Diego999/pyGAT.
+The official repository (in Tensorflow) is available in https://github.com/PetarV-/GAT. This repo is inspired by the pytorch implementation of 
+Diego Antognini (https://github.com/Diego999/pyGAT).
 
 In the paper they present graph attention networks (GATs), a novel neural network architectures
 that operate on graph-structured data, leveraging masked multi(-self)-attentional layers to
