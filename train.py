@@ -77,7 +77,7 @@ def train(model, optimizer, x, y, A, train_mask, val_mask, n_epochs, plot=False,
 if __name__ == '__main__':
 	parser = argparse.ArgumentParser()
 	parser.add_argument('--dataset', default='Cora', choices=['Cora', 'CiteSeer'])
-	parser.add_argument('--epochs', default=200, help='Number of epochs to train.')
+	parser.add_argument('--epochs', type=int, default=200, help='Number of epochs to train.')
 	parser.add_argument('--lr', type=float, default=0.005, help='Initial learning rate.')
 	parser.add_argument('--hidden', type=int, default=8, help='Number of hidden units.')
 	parser.add_argument('--heads', type=int, default=8, help='Number of head attentions.')
@@ -126,7 +126,7 @@ if __name__ == '__main__':
 		model.cuda()
 
 	train(model, optimizer, x, y, A, train_mask, val_mask,
-		  n_epochs=n_epochs, plot=True, save_path=f'./outputs{dataset.name}')
+		  n_epochs=n_epochs, plot=True, save_path=f'./outputs/{dataset.name}')
 
 	# Evaluate on test set
 	with torch.no_grad():
