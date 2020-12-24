@@ -18,7 +18,7 @@ def train(model, optimizer, data, A, n_epochs, plot=False, device=None):
 	targets = data.y.to(device)
 
 	train_mask = torch.LongTensor(np.arange(140)).to(device)
-	val_mask = torch.LongTensor(np.arange(225, 500)).to(device)
+	val_mask = torch.LongTensor(np.arange(200, 500)).to(device)
 	#train_mask = data.train_mask.to(device)
 	#val_mask = data.val_mask.to(device)
 	start = time.time()
@@ -26,7 +26,7 @@ def train(model, optimizer, data, A, n_epochs, plot=False, device=None):
 	for epoch in range(n_epochs):
 		model.train()
 		optimizer.zero_grad()
-		out = model(x, A)
+		out = model(x, A.to(device))
 		train_loss = F.cross_entropy(out[train_mask], targets[train_mask])
 		train_acc = accuracy(out[train_mask], targets[train_mask])
 		train_loss.backward()
@@ -34,7 +34,7 @@ def train(model, optimizer, data, A, n_epochs, plot=False, device=None):
 
 		# Evaluate on validation set
 		model.eval()
-		out = model(x, A)
+		out = model(x, A.to(device))
 		val_loss = F.cross_entropy(out[val_mask], targets[val_mask])
 		val_acc = accuracy(out[val_mask], targets[val_mask])
 
@@ -93,7 +93,7 @@ if __name__ == '__main__':
 	num_targets = len(torch.unique(y))
 	print(f'Num classes: {num_targets}')
 
-	A = create_adjacency_matrix(num_nodes, data.edge_index, device=device)
+	A = create_adjacency_matrix(num_nodes, data.edge_index, device=None)
 
 	model = GAT(
 		node_dim=num_features,
