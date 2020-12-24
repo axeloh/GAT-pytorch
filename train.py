@@ -12,7 +12,7 @@ from utils import print_info_about_dataset, plot_dataset, accuracy, create_adjac
 from models import GAT
 
 
-def train(model, optimizer, x, y, A, train_mask, val_mask, n_epochs, plot=False, device=None):
+def train(model, optimizer, x, y, A, train_mask, val_mask, n_epochs, plot=False, save_path='./outputs/Cora'):
 	train_accuracies, val_accuracies = [], []
 	train_losses, val_losses = [], []
 	start = time.time()
@@ -55,8 +55,8 @@ def train(model, optimizer, x, y, A, train_mask, val_mask, n_epochs, plot=False,
 		plt.plot(val_losses, label="Validation losses")
 		plt.xlabel("# Epoch")
 		plt.ylabel("Loss")
-		plt.legend(loc='upper right')
-		plt.savefig('./outputs/att_loss_plot.png')
+		plt.legend(loc='lower right')
+		plt.savefig(f'{save_path}/att_loss_plot.png')
 		plt.show()
 		plt.close()
 
@@ -65,7 +65,7 @@ def train(model, optimizer, x, y, A, train_mask, val_mask, n_epochs, plot=False,
 		plt.xlabel("# Epoch")
 		plt.ylabel("Accuracy")
 		plt.legend(loc='upper right')
-		plt.savefig('./outputs/att_accuracy_plot.png')
+		plt.savefig(f'{save_path}/att_accuracy_plot.png')
 		plt.show()
 		plt.close()
 
@@ -74,7 +74,7 @@ if __name__ == '__main__':
 	device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 	print(f'Device: {device}')
 
-	dataset = Planetoid(root='/tmp/Cora', name='Cora')  # Cora, CiteSeer, or PubMed
+	dataset = Planetoid(root='/tmp/CiteSeer', name='CiteSeer')  # Cora, CiteSeer, or PubMed
 	print(dataset.data)
 	print_info_about_dataset(dataset)
 
@@ -95,9 +95,6 @@ if __name__ == '__main__':
 
 	x, A, y = Variable(x), Variable(A), Variable(y)
 
-	print(x.min())
-	print(x.max())
-
 	n_epochs = 500
 	model = GAT(
 		node_dim=num_features,
@@ -112,7 +109,8 @@ if __name__ == '__main__':
 	if torch.cuda.is_available():
 		model.cuda()
 
-	train(model, optimizer, x, y, A, train_mask, val_mask, n_epochs=n_epochs, plot=True, device=device)
+	train(model, optimizer, x, y, A, train_mask, val_mask,
+		  n_epochs=n_epochs, plot=True, save_path=f'./outputs{dataset.name}')
 
 	# Evaluate on test set
 	with torch.no_grad():
