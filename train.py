@@ -95,12 +95,12 @@ if __name__ == '__main__':
 
 	x, A, y = Variable(x), Variable(A), Variable(y)
 
-	n_epochs = 800
+	n_epochs = 100
 	model = GAT(
 		node_dim=num_features,
 		hid_dim=8,
 		num_classes=num_targets,
-		dropout=0.6,
+		dropout=0.0,
 		alpha=0.2,
 		num_heads=8
 	)
