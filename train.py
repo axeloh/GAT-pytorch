@@ -11,23 +11,17 @@ from utils import print_info_about_dataset, plot_dataset, accuracy, create_adjac
 from models import GAT
 
 
-def train(model, optimizer, x, y, A, n_epochs, plot=False, device=None):
+def train(model, optimizer, x, y, A, train_mask, val_mask, n_epochs, plot=False, device=None):
 	train_accuracies, val_accuracies = [], []
 	train_losses, val_losses = [], []
-	targets = y.to(device)
-
-	train_mask = torch.LongTensor(np.arange(140)).to(device)
-	val_mask = torch.LongTensor(np.arange(200, 500)).to(device)
-	#train_mask = data.train_mask.to(device)
-	#val_mask = data.val_mask.to(device)
 	start = time.time()
 
 	for epoch in range(n_epochs):
 		model.train()
 		optimizer.zero_grad()
 		out = model(x, A)
-		train_loss = F.cross_entropy(out[train_mask], targets[train_mask])
-		train_acc = accuracy(out[train_mask], targets[train_mask])
+		train_loss = F.cross_entropy(out[train_mask], y[train_mask])
+		train_acc = accuracy(out[train_mask], y[train_mask])
 		train_loss.backward()
 		optimizer.step()
 
@@ -35,8 +29,8 @@ def train(model, optimizer, x, y, A, n_epochs, plot=False, device=None):
 		with torch.no_grad():
 			model.eval()
 			out = model(x, A)
-			val_loss = F.cross_entropy(out[val_mask], targets[val_mask])
-			val_acc = accuracy(out[val_mask], targets[val_mask])
+			val_loss = F.cross_entropy(out[val_mask], y[val_mask])
+			val_acc = accuracy(out[val_mask], y[val_mask])
 
 		train_accuracies.append(train_acc.item())
 		train_losses.append(train_loss.item())
@@ -93,6 +87,9 @@ if __name__ == '__main__':
 	num_targets = len(torch.unique(y))
 	print(f'Num classes: {num_targets}')
 
+	train_mask = data.train_mask.to(device)
+	val_mask = data.val_mask.to(device)
+
 	A = create_adjacency_matrix(num_nodes, data.edge_index, device=device)
 
 	model = GAT(
@@ -108,12 +105,11 @@ if __name__ == '__main__':
 	if torch.cuda.is_available():
 		model.cuda()
 
-	train(model, optimizer, x, y, A, n_epochs=100, plot=True, device=device)
+	train(model, optimizer, x, y, A, train_mask, val_mask, n_epochs=100, plot=True, device=device)
 
 	# Evaluate on test set
 	with torch.no_grad():
-		test_mask = torch.LongTensor(np.arange(500, 1500)).to(device)
-		#test_mask = data.test_mask.to(device)
+		test_mask = data.test_mask.to(device)
 		model.eval()
 		out = model(x, A)
 		test_loss = F.cross_entropy(out[test_mask], y[test_mask])
