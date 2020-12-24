@@ -6,6 +6,7 @@ import time
 import os
 import numpy as np
 from torch.autograd import Variable
+import argparse
 
 
 from utils import print_info_about_dataset, accuracy, create_adjacency_matrix
@@ -74,10 +75,22 @@ def train(model, optimizer, x, y, A, train_mask, val_mask, n_epochs, plot=False,
 
 
 if __name__ == '__main__':
+	parser = argparse.ArgumentParser()
+	parser.add_argument('--dataset', default='Cora', choices=['Cora', 'CiteSeer'])
+	parser.add_argument('--epochs', default=200, help='Number of epochs to train.')
+	parser.add_argument('--lr', type=float, default=0.005, help='Initial learning rate.')
+	parser.add_argument('--hidden', type=int, default=8, help='Number of hidden units.')
+	parser.add_argument('--heads', type=int, default=8, help='Number of head attentions.')
+	parser.add_argument('--dropout', type=float, default=0.6, help='Dropout rate (1 - keep probability).')
+	parser.add_argument('--alpha', type=float, default=0.2, help='Alpha for the leaky_relu.')
+	parser.add_argument('--weight_decay', type=float, default=5e-4, help='Weight decay (L2 loss on parameters).')
+
+	args = parser.parse_args()
+
 	device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 	print(f'Device: {device}')
 
-	dataset = Planetoid(root='/tmp/CiteSeer', name='CiteSeer')  # Cora, CiteSeer, or PubMed
+	dataset = Planetoid(root=f'/tmp/{args.dataset}', name=args.dataset)  # Cora, CiteSeer, or PubMed
 	print(dataset.data)
 	print_info_about_dataset(dataset)
 
@@ -98,16 +111,16 @@ if __name__ == '__main__':
 
 	x, A, y = Variable(x), Variable(A), Variable(y)
 
-	n_epochs = 200
+	n_epochs = args.epochs
 	model = GAT(
 		node_dim=num_features,
-		hid_dim=8,
+		hid_dim=args.hidden,
 		num_classes=num_targets,
-		dropout=0.6,
-		alpha=0.2,
-		num_heads=8
+		dropout=args.dropout,
+		alpha=args.alpha,
+		num_heads=args.heads
 	)
-	optimizer = torch.optim.Adam(model.parameters(), lr=0.005, weight_decay=5e-4)
+	optimizer = torch.optim.Adam(model.parameters(), lr=args.lr, weight_decay=args.weight_decay)
 
 	if torch.cuda.is_available():
 		model.cuda()
