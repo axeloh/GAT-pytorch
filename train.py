@@ -8,7 +8,7 @@ import numpy as np
 from torch.autograd import Variable
 
 
-from utils import print_info_about_dataset, plot_dataset, accuracy, create_adjacency_matrix
+from utils import print_info_about_dataset, accuracy, create_adjacency_matrix
 from models import GAT
 
 
@@ -18,6 +18,7 @@ def train(model, optimizer, x, y, A, train_mask, val_mask, n_epochs, plot=False,
 	start = time.time()
 
 	for epoch in range(n_epochs):
+		epoch_start = time.time()
 		model.train()
 		optimizer.zero_grad()
 		out = model(x, A)
@@ -37,12 +38,14 @@ def train(model, optimizer, x, y, A, train_mask, val_mask, n_epochs, plot=False,
 		train_losses.append(train_loss.item())
 		val_accuracies.append(val_acc.item())
 		val_losses.append(val_loss.item())
+		epoch_time = time.time() - epoch_start
 
-		print(f'Epoch: {epoch+1}, '
+		print(f'[Epoch: {epoch+1}] | '
 			  f'train_loss: {train_loss.item():.3f}, '
 			  f'train_acc: {train_acc.item():.3f}, '
 			  f'val_loss: {val_loss.item():.3f} '
-			  f'val_acc: {val_acc.item():.3f} ',
+			  f'val_acc: {val_acc.item():.3f} '
+			  f'epoch duration: {epoch_time:.3f}s',
 			  )
 
 	print(f'Training done in {(time.time() - start):.1f}s')
