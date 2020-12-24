@@ -101,11 +101,11 @@ if __name__ == '__main__':
 	n_epochs = 200
 	model = GAT(
 		node_dim=num_features,
-		hid_dim=16,
+		hid_dim=8,
 		num_classes=num_targets,
 		dropout=0.6,
 		alpha=0.2,
-		num_heads=8
+		num_heads=4
 	)
 	optimizer = torch.optim.Adam(model.parameters(), lr=0.005, weight_decay=5e-4)
 
