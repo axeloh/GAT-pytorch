@@ -11,14 +11,15 @@ from utils import print_info_about_dataset, plot_dataset, accuracy, create_adjac
 from models import GAT
 
 
-def train(model, optimizer, data, A, n_epochs, plot=False, device=None):
+def train(model, optimizer, x, y, A, n_epochs, plot=False, device=None):
 	train_accuracies, val_accuracies = [], []
 	train_losses, val_losses = [], []
-	x = data.x.to(device)
-	targets = data.y.to(device)
+	targets = y.to(device)
 
-	train_mask = data.train_mask.to(device)
-	val_mask = data.val_mask.to(device)
+	train_mask = torch.LongTensor(np.arange(140)).to(device)
+	val_mask = torch.LongTensor(np.arange(200, 500)).to(device)
+	#train_mask = data.train_mask.to(device)
+	#val_mask = data.val_mask.to(device)
 	start = time.time()
 
 	for epoch in range(n_epochs):
@@ -107,11 +108,12 @@ if __name__ == '__main__':
 	if torch.cuda.is_available():
 		model.cuda()
 
-	train(model, optimizer, data, A, n_epochs=100, plot=True, device=device)
+	train(model, optimizer, x, y, A, n_epochs=100, plot=True, device=device)
 
 	# Evaluate on test set
 	with torch.no_grad():
-		test_mask = data.test_mask.to(device)
+		test_mask = torch.LongTensor(np.arange(500, 1500)).to(device)
+		#test_mask = data.test_mask.to(device)
 		model.eval()
 		out = model(x, A)
 		test_loss = F.cross_entropy(out[test_mask], y[test_mask])
