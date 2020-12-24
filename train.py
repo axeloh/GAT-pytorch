@@ -18,7 +18,7 @@ def train(model, optimizer, data, A, n_epochs, plot=False, device=None):
 	targets = data.y.to(device)
 
 	train_mask = torch.LongTensor(np.arange(140)).to(device)
-	val_mask = torch.LongTensor(np.arange(200, 500)).to(device)
+	val_mask = torch.LongTensor(np.arange(225, 500)).to(device)
 	#train_mask = data.train_mask.to(device)
 	#val_mask = data.val_mask.to(device)
 	start = time.time()
