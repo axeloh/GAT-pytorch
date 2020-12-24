@@ -17,8 +17,8 @@ def train(model, optimizer, data, A, n_epochs, plot=False, device=None):
 	x = data.x.to(device)
 	targets = data.y.to(device)
 
-	train_mask = torch.LongTensor(np.arange(140)).to(device)
-	val_mask = torch.LongTensor(np.arange(200, 500)).to(device)
+	train_mask = torch.LongTensor(np.arange(140))
+	val_mask = torch.LongTensor(np.arange(200, 500))
 	#train_mask = data.train_mask.to(device)
 	#val_mask = data.val_mask.to(device)
 	start = time.time()
@@ -27,8 +27,8 @@ def train(model, optimizer, data, A, n_epochs, plot=False, device=None):
 		model.train()
 		optimizer.zero_grad()
 		out = model(x, A.to(device))
-		train_loss = F.cross_entropy(out[train_mask], targets[train_mask])
-		train_acc = accuracy(out[train_mask], targets[train_mask])
+		train_loss = F.cross_entropy(out[train_mask.to(device)], targets[train_mask.to(device)])
+		train_acc = accuracy(out[train_mask.to(device)], targets[train_mask.to(device)])
 		train_loss.backward()
 		optimizer.step()
 
