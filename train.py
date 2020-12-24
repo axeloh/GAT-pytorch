@@ -91,16 +91,19 @@ if __name__ == '__main__':
 	train_mask = data.train_mask.to(device)
 	val_mask = data.val_mask.to(device)
 
-	A = create_adjacency_matrix(num_nodes, data.edge_index, device=device)
+	A = create_adjacency_matrix(num_nodes, data.edge_index, normalize=False, device=device)
 
 	x, A, y = Variable(x), Variable(A), Variable(y)
 
-	n_epochs = 100
+	print(x.min())
+	print(x.max())
+
+	n_epochs = 200
 	model = GAT(
 		node_dim=num_features,
 		hid_dim=8,
 		num_classes=num_targets,
-		dropout=0.0,
+		dropout=0.6,
 		alpha=0.2,
 		num_heads=8
 	)
