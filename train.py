@@ -76,7 +76,7 @@ def train(model, optimizer, x, y, A, train_mask, val_mask, n_epochs, plot=False,
 
 if __name__ == '__main__':
 	parser = argparse.ArgumentParser()
-	parser.add_argument('--dataset', default='PubMed', choices=['Cora', 'CiteSeer', 'PubMed'])
+	parser.add_argument('--dataset', default='Cora', choices=['Cora', 'CiteSeer', 'PubMed'])
 	parser.add_argument('--epochs', type=int, default=200, help='Number of epochs to train.')
 	parser.add_argument('--lr', type=float, default=0.005, help='Initial learning rate.')
 	parser.add_argument('--hidden', type=int, default=8, help='Number of hidden units.')
