@@ -22,9 +22,9 @@ def train(model, optimizer, x, y, A, train_mask, val_mask, n_epochs, plot=False,
 		optimizer.zero_grad()
 		out = model(x, A)
 		train_loss = F.cross_entropy(out[train_mask], y[train_mask])
-		train_acc = accuracy(out[train_mask], y[train_mask])
 		train_loss.backward()
 		optimizer.step()
+		train_acc = accuracy(out[train_mask], y[train_mask])
 
 		# Evaluate on validation set
 		with torch.no_grad():
