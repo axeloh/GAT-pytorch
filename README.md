@@ -15,9 +15,21 @@ approximations. The figure below displays the multi-headed attention meachanism.
 
 
 ### Evaluation
-The network is tested on the [Cora dataset](https://relational.fit.cvut.cz/dataset/CORA), and achieved ~80% accuracy on test set. In the original paper they report reaching an accuracy of 83 ± 0.7%
+On the [Cora dataset](https://relational.fit.cvut.cz/dataset/CORA) the model achieved ~80% accuracy on the test set. It uses ~0.7sec per epoch on 2x Nvidia RTX 2070S 8GB.
+In the original paper they report reaching an accuracy of 83 ± 0.7%.
 
 
+On the [CiteSeer dataset](https://linqs.soe.ucsc.edu/data) it achieved ~67% accuracy on the test set. It uses ~0.4sec per epoch on 2x Nvidia RTX 2080 Ti 11GB.
+In the original paper they report reaching an accuracy of 72.5 ± 0.7%.
+
+
+#### Cora
 Loss | Accuracy
 :--- | :--- 
-![](/outputs/att_loss_plot.png) | ![](/outputs/att_accuracy_plot.png)
+![](/outputs/Cora/att_loss_plot.png) | ![](/outputs/Cora/att_accuracy_plot.png)
+
+
+#### CiteSeer
+Loss | Accuracy
+:--- | :--- 
+![](/outputs/CiteSeer/att_loss_plot.png) | ![](/outputs/CiteSeer/att_accuracy_plot.png)
