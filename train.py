@@ -92,6 +92,7 @@ if __name__ == '__main__':
 
 	A = create_adjacency_matrix(num_nodes, data.edge_index, device=device)
 
+	n_epochs = 800
 	model = GAT(
 		node_dim=num_features,
 		hid_dim=8,
@@ -105,7 +106,7 @@ if __name__ == '__main__':
 	if torch.cuda.is_available():
 		model.cuda()
 
-	train(model, optimizer, x, y, A, train_mask, val_mask, n_epochs=100, plot=True, device=device)
+	train(model, optimizer, x, y, A, train_mask, val_mask, n_epochs=n_epochs, plot=True, device=device)
 
 	# Evaluate on test set
 	with torch.no_grad():
