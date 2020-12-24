@@ -15,7 +15,7 @@ approximations. The figure below displays the multi-headed attention meachanism.
 
 
 ### Evaluation
-On the [Cora dataset](https://relational.fit.cvut.cz/dataset/CORA) the model achieved ~80% accuracy on the test set. It uses ~0.7sec per epoch on 2x Nvidia RTX 2070S 8GB.
+On the [Cora dataset](https://relational.fit.cvut.cz/dataset/CORA) the model achieved ~81% accuracy on the test set. It uses ~0.35sec per epoch on 2x Nvidia RTX 2080 Ti 11GB.
 In the original paper they report reaching an accuracy of 83 ± 0.7%.
 
 
