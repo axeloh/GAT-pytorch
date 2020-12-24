@@ -98,7 +98,7 @@ if __name__ == '__main__':
 
 	x, A, y = Variable(x), Variable(A), Variable(y)
 
-	n_epochs = 500
+	n_epochs = 200
 	model = GAT(
 		node_dim=num_features,
 		hid_dim=8,
