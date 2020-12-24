@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 import time
 import os
 import numpy as np
+from torch.autograd import Variable
 
 
 from utils import print_info_about_dataset, plot_dataset, accuracy, create_adjacency_matrix
@@ -91,6 +92,8 @@ if __name__ == '__main__':
 	val_mask = data.val_mask.to(device)
 
 	A = create_adjacency_matrix(num_nodes, data.edge_index, device=device)
+
+	x, A, y = Variable(x), Variable(A), Variable(y)
 
 	n_epochs = 800
 	model = GAT(
