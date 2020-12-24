@@ -101,7 +101,7 @@ if __name__ == '__main__':
 	n_epochs = 200
 	model = GAT(
 		node_dim=num_features,
-		hid_dim=8,
+		hid_dim=16,
 		num_classes=num_targets,
 		dropout=0.6,
 		alpha=0.2,
