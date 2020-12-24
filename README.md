@@ -14,7 +14,7 @@ approximations. The figure below displays the multi-headed attention meachanism.
 
 
 ### Evaluation
-The network is tested on the [Cora dataset](https://relational.fit.cvut.cz/dataset/CORA), and achieved a little over 80% accuracy on test set.
+The network is tested on the [Cora dataset](https://relational.fit.cvut.cz/dataset/CORA), and achieved ~80% accuracy on test set. In the original paper they report reaching an accuracy of 83 ± 0.7%
 
 
 Loss | Accuracy
