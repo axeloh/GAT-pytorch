@@ -31,10 +31,11 @@ def train(model, optimizer, data, A, n_epochs, plot=False, device=None):
 		optimizer.step()
 
 		# Evaluate on validation set
-		model.eval()
-		out = model(x, A)
-		val_loss = F.cross_entropy(out[val_mask], targets[val_mask])
-		val_acc = accuracy(out[val_mask], targets[val_mask])
+		with torch.no_grad():
+			model.eval()
+			out = model(x, A)
+			val_loss = F.cross_entropy(out[val_mask], targets[val_mask])
+			val_acc = accuracy(out[val_mask], targets[val_mask])
 
 		train_accuracies.append(train_acc.item())
 		train_losses.append(train_loss.item())
@@ -109,10 +110,11 @@ if __name__ == '__main__':
 	train(model, optimizer, data, A, n_epochs=100, plot=True, device=device)
 
 	# Evaluate on test set
-	test_mask = data.test_mask.to(device)
-	model.eval()
-	out = model(x, A)
-	test_loss = F.cross_entropy(out[test_mask], y[test_mask])
-	test_acc = accuracy(out[test_mask], y[test_mask])
+	with torch.no_grad():
+		test_mask = data.test_mask.to(device)
+		model.eval()
+		out = model(x, A)
+		test_loss = F.cross_entropy(out[test_mask], y[test_mask])
+		test_acc = accuracy(out[test_mask], y[test_mask])
 
-	print(f'---- Accuracy on test set: {test_acc.item()}')
+		print(f'---- Accuracy on test set: {test_acc.item()}')
