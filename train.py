@@ -50,15 +50,12 @@ def train(model, optimizer, x, y, A, train_mask, val_mask, n_epochs, plot=False,
 			  f'val_acc: {val_acc.item():.3f} '
 			  f'epoch_time: {epoch_time:.3f}s',
 			  )
-
+		
+		# Save only if better than so-far best model
 		if val_loss.item() < best_val_loss:
 			torch.save(model.state_dict(), f'saved_models/best_model_{args.dataset}.pkl')
+			best_val_loss = val_loss.item()
 			best_epoch = epoch
-		# else:
-		#	bad_counter += 1
-
-		# if bad_counter == args.patience:
-		#	break
 
 	print(f'Training done in {(time.time() - start):.1f}s')
 
