@@ -109,6 +109,7 @@ def evaluate_test(x, y, test_mask, model):
 if __name__ == '__main__':
 	parser = argparse.ArgumentParser()
 	parser.add_argument('--dataset', default='Cora', choices=['Cora', 'CiteSeer', 'PubMed'])
+	parser.add_argument('--data_split', default='public', choices=['public', 'full', 'random'])
 	parser.add_argument('--epochs', type=int, default=200, help='Number of epochs to train.')
 	parser.add_argument('--lr', type=float, default=0.005, help='Initial learning rate.')
 	parser.add_argument('--hidden', type=int, default=8, help='Number of hidden units.')
@@ -118,6 +119,7 @@ if __name__ == '__main__':
 	parser.add_argument('--weight_decay', type=float, default=5e-4, help='Weight decay (L2 loss on parameters).')
 	parser.add_argument('--patience', type=int, default=30, help='Patience for early-stopping')
 
+
 	args = parser.parse_args()
 
 	if not os.path.exists('saved_models'):
@@ -126,7 +128,7 @@ if __name__ == '__main__':
 	device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 	print(f'Device: {device}')
 
-	dataset = Planetoid(root=f'/tmp/{args.dataset}', name=args.dataset, split='random')  # Cora, CiteSeer, or PubMed
+	dataset = Planetoid(root=f'/tmp/{args.dataset}', name=args.dataset, split=args.data_split)  # Cora, CiteSeer, or PubMed
 	print(dataset.data)
 	print_info_about_dataset(dataset)
 
