@@ -17,14 +17,14 @@ approximations. The figure below displays the multi-headed attention meachanism.
 ### Evaluation
 I evaluate the model on two standard citation network benchmark datasets: [Cora dataset](https://relational.fit.cvut.cz/dataset/CORA) and [CiteSeer dataset](https://linqs.soe.ucsc.edu/data). I follow the same experimental setup as in the paper. Only 20 nodes per class are used for training. The trained model is evaluated on 1000 test nodes, while 500 nodes are used for validation purposes (mainly early-stopping). The reported results are averaged over 5 runs. 
 
-On Cora the model achieved ~80.8 ± 0.9% accuracy on the test set. It uses ~0.35sec per epoch on 2x Nvidia RTX 2080 Ti 11GB.
-In the original paper they report reaching an accuracy of 83 ± 0.7%.
+On Cora the model achieved 80.8 ± 0.5% accuracy on the test set. It uses ~0.35sec per epoch on 2x Nvidia RTX 2080 Ti 11GB.
+In the original paper they report reaching an accuracy of 83 ± 0.7% (averaged over 100 runs).
 
 
-On CiteSeer it achieved ~69% accuracy on the test set. It uses ~0.4sec per epoch on 2x Nvidia RTX 2080 Ti 11GB.
-In the original paper they report reaching an accuracy of 72.5 ± 0.7%.
+On CiteSeer it achieved 68 ± 0.4% accuracy on the test set. It uses ~0.4sec per epoch on 2x Nvidia RTX 2080 Ti 11GB.
+In the original paper they report reaching an accuracy of 72.5 ± 0.7% (averaged over 100 runs).
 
-
+### Loss and Accuracy plots for one of the runs
 #### Cora
 Loss | Accuracy
 :--- | :--- 
