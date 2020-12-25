@@ -13,10 +13,12 @@ from utils import print_info_about_dataset, accuracy, create_adjacency_matrix
 from models import GAT
 
 
-def train(model, optimizer, x, y, A, train_mask, val_mask, n_epochs, plot=False, save_path='./outputs/Cora'):
+def train(model, optimizer, x, y, A, train_mask, val_mask, n_epochs, patience, plot=False, save_path='./outputs/Cora'):
 	train_accuracies, val_accuracies = [], []
 	train_losses, val_losses = [], []
 	start = time.time()
+
+	bad_counter = 0
 	best_val_loss = 1e10
 	best_epoch = 0
 
@@ -56,6 +58,12 @@ def train(model, optimizer, x, y, A, train_mask, val_mask, n_epochs, plot=False,
 			torch.save(model.state_dict(), f'saved_models/best_model_{args.dataset}.pkl')
 			best_val_loss = val_loss.item()
 			best_epoch = epoch
+			bad_counter = 0
+		else:
+			bad_counter += 1
+		
+		if bad_counter == patience:
+			break
 
 	# Also save last model
 	torch.save(model.state_dict(), f'saved_models/last_model_{args.dataset}.pkl')
@@ -107,7 +115,7 @@ if __name__ == '__main__':
 	parser.add_argument('--dropout', type=float, default=0.6, help='Dropout rate (1 - keep probability).')
 	parser.add_argument('--alpha', type=float, default=0.2, help='Alpha for the leaky_relu.')
 	parser.add_argument('--weight_decay', type=float, default=5e-4, help='Weight decay (L2 loss on parameters).')
-	parser.add_argument('--patience', type=int, default=100, help='Patience for early-stopping')
+	parser.add_argument('--patience', type=int, default=30, help='Patience for early-stopping')
 
 	args = parser.parse_args()
 
@@ -153,7 +161,7 @@ if __name__ == '__main__':
 		model.cuda()
 
 	best_epoch = train(model, optimizer, x, y, A, train_mask, val_mask,
-					   n_epochs=n_epochs, plot=True, save_path=f'./outputs/{dataset.name}')
+					   n_epochs=n_epochs, patience=args.patience, plot=True, save_path=f'./outputs/{dataset.name}')
 
 	# Evaluate on test set
 	print('--- Final evaluation on test set:')
