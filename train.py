@@ -160,11 +160,11 @@ if __name__ == '__main__':
 	test_mask = data.test_mask.to(device)
 	model.load_state_dict(torch.load(f'saved_models/best_model_{args.dataset}.pkl'))  # Restoring best model
 	test_loss, test_acc = evaluate_test(x, y, test_mask, model)
-	print(f'[Best model (epoch {best_epoch}] | loss: {test_loss:.3f}, acc: {test_acc:.3f}')
+	print(f'Best model (epoch {best_epoch}) | loss: {test_loss:.3f}, acc: {test_acc:.3f}')
 
 	model.load_state_dict(torch.load(f'saved_models/last_model_{args.dataset}.pkl'))  # Restoring last model
 	test_loss, test_acc = evaluate_test(x, y, test_mask, model)
-	print(f'[Last model (epoch {n_epochs}] | loss: {test_loss:.3f}, acc: {test_acc:.3f}')
+	print(f'Last model (epoch {n_epochs}) | loss: {test_loss:.3f}, acc: {test_acc:.3f}')
 
 	# with torch.no_grad():
 	# 	test_mask = data.test_mask.to(device)
