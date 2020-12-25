@@ -52,9 +52,9 @@ def train(model, optimizer, x, y, A, train_mask, val_mask, n_epochs, plot=False,
 			  )
 
 		# Save only if better than so-far best model
-		if val_loss.item() < best_val_loss:
+		if val_acc.item() < best_val_loss:
 			torch.save(model.state_dict(), f'saved_models/best_model_{args.dataset}.pkl')
-			best_val_loss = val_loss.item()
+			best_val_loss = val_acc.item()
 			best_epoch = epoch
 
 	# Also save last model
@@ -77,7 +77,7 @@ def train(model, optimizer, x, y, A, train_mask, val_mask, n_epochs, plot=False,
 
 		plt.plot(train_accuracies, label="Train accuracy")
 		plt.plot(val_accuracies, label="Validation accuracy")
-		plt.axvline(x=best_epoch, label='Early Stopping Checkpoint', c='r', linestyle='--')
+		# plt.axvline(x=best_epoch, label='Early Stopping Checkpoint', c='r', linestyle='--')
 		plt.xlabel("# Epoch")
 		plt.ylabel("Accuracy")
 		plt.legend(loc='lower right')
