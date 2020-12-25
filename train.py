@@ -17,6 +17,8 @@ def train(model, optimizer, x, y, A, train_mask, val_mask, n_epochs, plot=False,
 	train_accuracies, val_accuracies = [], []
 	train_losses, val_losses = [], []
 	start = time.time()
+	best_val_loss = 1e10
+	best_epoch = 0
 
 	for epoch in range(n_epochs):
 		epoch_start = time.time()
@@ -49,6 +51,15 @@ def train(model, optimizer, x, y, A, train_mask, val_mask, n_epochs, plot=False,
 			  f'epoch_time: {epoch_time:.3f}s',
 			  )
 
+		if val_loss.item() < best_val_loss:
+			torch.save(model.state_dict(), f'saved_models/model_{args.dataset}_epoch{epoch}.pkl')
+			best_epoch = epoch
+		# else:
+		#	bad_counter += 1
+
+		# if bad_counter == args.patience:
+		#	break
+
 	print(f'Training done in {(time.time() - start):.1f}s')
 
 	if plot:
@@ -57,6 +68,7 @@ def train(model, optimizer, x, y, A, train_mask, val_mask, n_epochs, plot=False,
 
 		plt.plot(train_losses, label="Train losses")
 		plt.plot(val_losses, label="Validation losses")
+		plt.axvline(x=best_epoch, label='Early Stopping Checkpoint', c='r--')
 		plt.xlabel("# Epoch")
 		plt.ylabel("Loss")
 		plt.legend(loc='upper right')
@@ -66,12 +78,15 @@ def train(model, optimizer, x, y, A, train_mask, val_mask, n_epochs, plot=False,
 
 		plt.plot(train_accuracies, label="Train accuracy")
 		plt.plot(val_accuracies, label="Validation accuracy")
+		plt.axvline(x=best_epoch, label='Early Stopping Checkpoint', c='r--')
 		plt.xlabel("# Epoch")
 		plt.ylabel("Accuracy")
 		plt.legend(loc='lower right')
 		plt.savefig(f'{save_path}/att_accuracy_plot.png')
 		plt.show()
 		plt.close()
+
+	return best_epoch
 
 
 if __name__ == '__main__':
@@ -84,8 +99,12 @@ if __name__ == '__main__':
 	parser.add_argument('--dropout', type=float, default=0.6, help='Dropout rate (1 - keep probability).')
 	parser.add_argument('--alpha', type=float, default=0.2, help='Alpha for the leaky_relu.')
 	parser.add_argument('--weight_decay', type=float, default=5e-4, help='Weight decay (L2 loss on parameters).')
+	parser.add_argument('--patience', type=int, default=100, help='Patience for early-stopping')
 
 	args = parser.parse_args()
+
+	if not os.path.exists('saved_models'):
+		os.makedirs('saved_models')
 
 	device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 	print(f'Device: {device}')
@@ -125,10 +144,12 @@ if __name__ == '__main__':
 	if torch.cuda.is_available():
 		model.cuda()
 
-	train(model, optimizer, x, y, A, train_mask, val_mask,
-		  n_epochs=n_epochs, plot=True, save_path=f'./outputs/{dataset.name}')
+	best_epoch = train(model, optimizer, x, y, A, train_mask, val_mask,
+					   n_epochs=n_epochs, plot=True, save_path=f'./outputs/{dataset.name}')
 
 	# Evaluate on test set
+	print(f'Loading best model saved at epoch {best_epoch}')
+	model.load_state_dict(torch.load(f'saved_models/model_{args.dataset}_epoch{best_epoch}.pkl'))  # Restoring best model
 	with torch.no_grad():
 		test_mask = data.test_mask.to(device)
 		model.eval()
