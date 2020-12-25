@@ -15,7 +15,7 @@ The aggregation process of a multi-head graph attentional layer:
 
 The output of each head is concatinated:
 
-<img src="https://i.imgur.com/EQqV4Fw.png" alt="" width="300"/>
+<img src="https://i.imgur.com/EQqV4Fw.png" alt="" width="260"/>
 
 In the final layer, averaging is used instead of concatination, which yields the final node representation:
 
