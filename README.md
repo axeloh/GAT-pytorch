@@ -19,7 +19,7 @@ On the [Cora dataset](https://relational.fit.cvut.cz/dataset/CORA) the model ach
 In the original paper they report reaching an accuracy of 83 ± 0.7%.
 
 
-On the [CiteSeer dataset](https://linqs.soe.ucsc.edu/data) it achieved ~67% accuracy on the test set. It uses ~0.4sec per epoch on 2x Nvidia RTX 2080 Ti 11GB.
+On the [CiteSeer dataset](https://linqs.soe.ucsc.edu/data) it achieved ~69% accuracy on the test set. It uses ~0.4sec per epoch on 2x Nvidia RTX 2080 Ti 11GB.
 In the original paper they report reaching an accuracy of 72.5 ± 0.7%.
 
 
