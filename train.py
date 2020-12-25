@@ -61,8 +61,9 @@ def train(model, optimizer, x, y, A, train_mask, val_mask, n_epochs, patience, p
 			bad_counter = 0
 		else:
 			bad_counter += 1
-		
+
 		if bad_counter == patience:
+			print(f'Early-stopping because val loss has not improved in {patience} epochs')
 			break
 
 	# Also save last model
@@ -108,7 +109,7 @@ def evaluate_test(x, y, test_mask, model):
 if __name__ == '__main__':
 	parser = argparse.ArgumentParser()
 	parser.add_argument('--dataset', default='Cora', choices=['Cora', 'CiteSeer', 'PubMed'])
-	parser.add_argument('--epochs', type=int, default=100, help='Number of epochs to train.')
+	parser.add_argument('--epochs', type=int, default=200, help='Number of epochs to train.')
 	parser.add_argument('--lr', type=float, default=0.005, help='Initial learning rate.')
 	parser.add_argument('--hidden', type=int, default=8, help='Number of hidden units.')
 	parser.add_argument('--heads', type=int, default=8, help='Number of head attentions.')
@@ -172,7 +173,7 @@ if __name__ == '__main__':
 
 	model.load_state_dict(torch.load(f'saved_models/last_model_{args.dataset}.pkl'))  # Restoring last model
 	test_loss, test_acc = evaluate_test(x, y, test_mask, model)
-	print(f'Last model (epoch {n_epochs}) | loss: {test_loss:.3f}, acc: {test_acc:.3f}')
+	print(f'Last model | loss: {test_loss:.3f}, acc: {test_acc:.3f}')
 
 	# with torch.no_grad():
 	# 	test_mask = data.test_mask.to(device)
