@@ -68,7 +68,7 @@ def train(model, optimizer, x, y, A, train_mask, val_mask, n_epochs, plot=False,
 
 		plt.plot(train_losses, label="Train losses")
 		plt.plot(val_losses, label="Validation losses")
-		plt.axvline(x=best_epoch, label='Early Stopping Checkpoint', c='r--')
+		plt.axvline(x=best_epoch, label='Early Stopping Checkpoint', c='r', linestyles='--')
 		plt.xlabel("# Epoch")
 		plt.ylabel("Loss")
 		plt.legend(loc='upper right')
@@ -78,7 +78,7 @@ def train(model, optimizer, x, y, A, train_mask, val_mask, n_epochs, plot=False,
 
 		plt.plot(train_accuracies, label="Train accuracy")
 		plt.plot(val_accuracies, label="Validation accuracy")
-		plt.axvline(x=best_epoch, label='Early Stopping Checkpoint', c='r--')
+		plt.axvline(x=best_epoch, label='Early Stopping Checkpoint', c='r', linestyles='--')
 		plt.xlabel("# Epoch")
 		plt.ylabel("Accuracy")
 		plt.legend(loc='lower right')
