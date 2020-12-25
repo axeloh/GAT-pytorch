@@ -50,15 +50,17 @@ def train(model, optimizer, x, y, A, train_mask, val_mask, n_epochs, plot=False,
 			  f'val_acc: {val_acc.item():.3f} '
 			  f'epoch_time: {epoch_time:.3f}s',
 			  )
-		
+
 		# Save only if better than so-far best model
 		if val_loss.item() < best_val_loss:
 			torch.save(model.state_dict(), f'saved_models/best_model_{args.dataset}.pkl')
 			best_val_loss = val_loss.item()
 			best_epoch = epoch
 
-	print(f'Training done in {(time.time() - start):.1f}s')
+	# Also save last model
+	torch.save(model.state_dict(), f'saved_models/last_model_{args.dataset}.pkl')
 
+	print(f'Training done in {(time.time() - start):.1f}s')
 	if plot:
 		if not os.path.exists(save_path):
 			os.makedirs(save_path)
@@ -84,6 +86,15 @@ def train(model, optimizer, x, y, A, train_mask, val_mask, n_epochs, plot=False,
 		plt.close()
 
 	return best_epoch
+
+
+def evaluate_test(x, y, test_mask, model):
+	with torch.no_grad():
+		model.eval()
+		out = model(x, A)
+		test_loss = F.cross_entropy(out[test_mask], y[test_mask])
+		test_acc = accuracy(out[test_mask], y[test_mask])
+	return test_loss, test_acc
 
 
 if __name__ == '__main__':
@@ -145,13 +156,21 @@ if __name__ == '__main__':
 					   n_epochs=n_epochs, plot=True, save_path=f'./outputs/{dataset.name}')
 
 	# Evaluate on test set
-	print(f'Loading best model saved at epoch {best_epoch}')
+	print('--- Final evaluation on test set:')
+	test_mask = data.test_mask.to(device)
 	model.load_state_dict(torch.load(f'saved_models/best_model_{args.dataset}.pkl'))  # Restoring best model
-	with torch.no_grad():
-		test_mask = data.test_mask.to(device)
-		model.eval()
-		out = model(x, A)
-		test_loss = F.cross_entropy(out[test_mask], y[test_mask])
-		test_acc = accuracy(out[test_mask], y[test_mask])
+	test_loss, test_acc = evaluate_test(x, y, test_mask, model)
+	print(f'[Best model (epoch {best_epoch}] | loss: {test_loss:.3f}, acc: {test_acc:3f}')
 
-		print(f'---- Accuracy on test set: {test_acc.item()}')
+	model.load_state_dict(torch.load(f'saved_models/best_model_{args.dataset}.pkl'))  # Restoring last model
+	test_loss, test_acc = evaluate_test(x, y, test_mask, model)
+	print(f'[Last model (epoch {n_epochs}] | loss: {test_loss:.3f}, acc: {test_acc:3f}')
+
+	# with torch.no_grad():
+	# 	test_mask = data.test_mask.to(device)
+	# 	model.eval()
+	# 	out = model(x, A)
+	# 	test_loss = F.cross_entropy(out[test_mask], y[test_mask])
+	# 	test_acc = accuracy(out[test_mask], y[test_mask])
+	#
+	# 	print(f'---- Accuracy on test set: {test_acc.item()}')
