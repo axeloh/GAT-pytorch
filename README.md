@@ -11,6 +11,7 @@ address the shortcomings of prior methods based on graph convolutions or their
 approximations. The figure and formulas below are adapted from the paper. 
 
 The aggregation process of a multi-head graph attentional layer:
+
 <img src="https://i.imgur.com/kQEMbXF.png" alt="" width="600"/>
 
 The output of each head is concatinated:
