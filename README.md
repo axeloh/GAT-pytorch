@@ -6,7 +6,7 @@ The official repository (in Tensorflow) is available in https://github.com/Petar
 Diego Antognini (https://github.com/Diego999/pyGAT).
 
 In the paper they present graph attention networks (GATs), a novel neural network architectures
-that operate on graph-structured data, leveraging masked multi(-self)-attentional layers to
+that operate on graph-structured data, leveraging masked (multi-headed) self-attentional layers to
 address the shortcomings of prior methods based on graph convolutions or their
 approximations. The figure below displays the multi-headed attention meachanism. 
 
