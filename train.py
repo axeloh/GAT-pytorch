@@ -17,7 +17,7 @@ def train(model, optimizer, x, y, A, train_mask, val_mask, n_epochs, plot=False,
 	train_accuracies, val_accuracies = [], []
 	train_losses, val_losses = [], []
 	start = time.time()
-	best_val_loss = 1e10
+	best_val_loss = 0
 	best_epoch = 0
 
 	for epoch in range(n_epochs):
@@ -52,7 +52,7 @@ def train(model, optimizer, x, y, A, train_mask, val_mask, n_epochs, plot=False,
 			  )
 
 		# Save only if better than so-far best model
-		if val_acc.item() < best_val_loss:
+		if val_acc.item() > best_val_loss:
 			torch.save(model.state_dict(), f'saved_models/best_model_{args.dataset}.pkl')
 			best_val_loss = val_acc.item()
 			best_epoch = epoch
