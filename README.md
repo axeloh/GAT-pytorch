@@ -2,15 +2,22 @@
 
 A pytorch implementation of the Graph Attention Network (GAT) model presented by [Veličković et. al](https://arxiv.org/abs/1710.10903).
 This repo is a quick and somewhat inaccurate reproduction of the method described in the paper. 
-The official repository (in Tensorflow) is available in https://github.com/PetarV-/GAT. This repo is inspired by the pytorch implementation of 
+The official repository (in Tensorflow) is available in https://github.com/PetarV-/GAT. This repo is inspired by the pytorch implementation made by 
 Diego Antognini (https://github.com/Diego999/pyGAT).
 
 In the paper they present graph attention networks (GATs), a novel neural network architectures
 that operate on graph-structured data, leveraging masked (multi-headed) self-attentional layers to
 address the shortcomings of prior methods based on graph convolutions or their
-approximations. The figure below displays the multi-headed attention meachanism. 
+approximations. The figure and formulas below are adapted from the paper. 
 
+The aggregation process of a multi-head graph attentional layer:
 <img src="https://i.imgur.com/kQEMbXF.png" alt="" width="600"/>
+
+The output of each head is concatinated:
+<img src="https://i.imgur.com/EQqV4Fw.png" alt="" width="300"/>
+
+In the final layer, averaging is used instead of concatination, which yields the final node representation:
+<img src="https://i.imgur.com/OBL4FER.png" alt="" width="300"/>
 
 
 
