@@ -68,7 +68,7 @@ def train(model, optimizer, x, y, A, train_mask, val_mask, n_epochs, plot=False,
 
 		plt.plot(train_losses, label="Train losses")
 		plt.plot(val_losses, label="Validation losses")
-		plt.vlines(x=best_epoch, label='Early Stopping Checkpoint', c='r', linestyles='--')
+		plt.axvline(x=best_epoch, label='Early Stopping Checkpoint', c='r', linestyle='--')
 		plt.xlabel("# Epoch")
 		plt.ylabel("Loss")
 		plt.legend(loc='upper right')
@@ -78,7 +78,7 @@ def train(model, optimizer, x, y, A, train_mask, val_mask, n_epochs, plot=False,
 
 		plt.plot(train_accuracies, label="Train accuracy")
 		plt.plot(val_accuracies, label="Validation accuracy")
-		plt.vlines(x=best_epoch, label='Early Stopping Checkpoint', c='r', linestyles='--')
+		plt.axvline(x=best_epoch, label='Early Stopping Checkpoint', c='r', linestyle='--')
 		plt.xlabel("# Epoch")
 		plt.ylabel("Accuracy")
 		plt.legend(loc='lower right')
@@ -92,7 +92,7 @@ def train(model, optimizer, x, y, A, train_mask, val_mask, n_epochs, plot=False,
 if __name__ == '__main__':
 	parser = argparse.ArgumentParser()
 	parser.add_argument('--dataset', default='Cora', choices=['Cora', 'CiteSeer', 'PubMed'])
-	parser.add_argument('--epochs', type=int, default=200, help='Number of epochs to train.')
+	parser.add_argument('--epochs', type=int, default=0, help='Number of epochs to train.')
 	parser.add_argument('--lr', type=float, default=0.005, help='Initial learning rate.')
 	parser.add_argument('--hidden', type=int, default=8, help='Number of hidden units.')
 	parser.add_argument('--heads', type=int, default=8, help='Number of head attentions.')
