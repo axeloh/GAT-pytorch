@@ -18,7 +18,7 @@ The output of each head is concatinated:
 
 <img src="https://i.imgur.com/EQqV4Fw.png" alt="" width="260"/>
 
-In the final layer, averaging is used instead of concatination, which yields the final node representation:
+If multi-head attention is used inn the final layer, averaging is used instead of concatination, and the activation function delayed:
 
 <img src="https://i.imgur.com/OBL4FER.png" alt="" width="300"/>
 
