@@ -39,9 +39,8 @@ class GraphAttentionLayer(nn.Module):
         e = self.leakyrelu(torch.matmul(attn_input, self.a).squeeze(2))
 
         # Attention weights
-        # zero_vec = torch.ones_like(e) * -9e15
-        # attention = torch.where(A > 0, e, zero_vec)   # Mask out non-neighbours
-        attention = e
+        zero_vec = torch.ones_like(e) * -9e15
+        attention = torch.where(A > 0, e, zero_vec)   # Mask out non-neighbours
         attention = torch.softmax(attention, dim=1)
         attention = torch.dropout(attention, self.dropout, train=self.training)
 
