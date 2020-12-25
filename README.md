@@ -24,7 +24,6 @@ In the original paper they report reaching an accuracy of 83 ± 0.7% (averaged o
 On CiteSeer it achieved 68 ± 0.4% accuracy on the test set. It uses ~0.4sec per epoch on 2x Nvidia RTX 2080 Ti 11GB.
 In the original paper they report reaching an accuracy of 72.5 ± 0.7% (averaged over 100 runs).
 
-### Loss and Accuracy plots for one of the runs
 #### Cora
 Loss | Accuracy
 :--- | :--- 
