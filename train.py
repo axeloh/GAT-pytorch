@@ -126,7 +126,7 @@ if __name__ == '__main__':
 	device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 	print(f'Device: {device}')
 
-	dataset = Planetoid(root=f'/tmp/{args.dataset}', name=args.dataset)  # Cora, CiteSeer, or PubMed
+	dataset = Planetoid(root=f'/tmp/{args.dataset}', name=args.dataset, split='random')  # Cora, CiteSeer, or PubMed
 	print(dataset.data)
 	print_info_about_dataset(dataset)
 
