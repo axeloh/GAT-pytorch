@@ -52,7 +52,7 @@ def train(model, optimizer, x, y, A, train_mask, val_mask, n_epochs, plot=False,
 			  )
 
 		if val_loss.item() < best_val_loss:
-			torch.save(model.state_dict(), f'saved_models/model_{args.dataset}_epoch{epoch}.pkl')
+			torch.save(model.state_dict(), f'saved_models/best_model_{args.dataset}.pkl')
 			best_epoch = epoch
 		# else:
 		#	bad_counter += 1
@@ -92,7 +92,7 @@ def train(model, optimizer, x, y, A, train_mask, val_mask, n_epochs, plot=False,
 if __name__ == '__main__':
 	parser = argparse.ArgumentParser()
 	parser.add_argument('--dataset', default='Cora', choices=['Cora', 'CiteSeer', 'PubMed'])
-	parser.add_argument('--epochs', type=int, default=0, help='Number of epochs to train.')
+	parser.add_argument('--epochs', type=int, default=100, help='Number of epochs to train.')
 	parser.add_argument('--lr', type=float, default=0.005, help='Initial learning rate.')
 	parser.add_argument('--hidden', type=int, default=8, help='Number of hidden units.')
 	parser.add_argument('--heads', type=int, default=8, help='Number of head attentions.')
@@ -149,7 +149,7 @@ if __name__ == '__main__':
 
 	# Evaluate on test set
 	print(f'Loading best model saved at epoch {best_epoch}')
-	model.load_state_dict(torch.load(f'saved_models/model_{args.dataset}_epoch{best_epoch}.pkl'))  # Restoring best model
+	model.load_state_dict(torch.load(f'saved_models/best_model_{args.dataset}.pkl'))  # Restoring best model
 	with torch.no_grad():
 		test_mask = data.test_mask.to(device)
 		model.eval()
